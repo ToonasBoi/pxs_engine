@@ -18,16 +18,27 @@ func Config(win_w int32, win_h int32, res_w int32, res_h int32, title string) {
 	config.win_h = win_h
 	config.res_w = res_w
 	config.res_h = res_h
+
 	config.title = title
 }
 
-func Launch(start_func func(), update_func func(float32), draw_func func()) {
+func Launch(launch_func func(), update_func func(float32), render_func func()) {
 	rl.InitWindow(config.win_w, config.win_h, config.title)
 
-	start_func()
+	var curr_time float32 = 0
+	var prev_time float32 = 0
+
+	launch_func()
 
 	for !rl.WindowShouldClose() {
-		update_func(float32(rl.GetTime()))
-		draw_func()
+		curr_time = float32(rl.GetTime())
+		update_func(curr_time - prev_time)
+		prev_time = curr_time
+
+		rl.BeginDrawing()
+		render_func()
+		rl.EndDrawing()
 	}
+
+	rl.CloseWindow()
 }
