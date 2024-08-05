@@ -25,10 +25,10 @@ func Config(win_w int32, win_h int32, res_w int32, res_h int32, title string) {
 func Launch(launch_func func(), update_func func(float32), render_func func()) {
 	rl.InitWindow(config.win_w, config.win_h, config.title)
 
-	var curr_time float32 = 0
-	var prev_time float32 = 0
-
 	launch_func()
+
+	var curr_time float32 = 0
+	var prev_time float32 = float32(rl.GetTime())
 
 	for !rl.WindowShouldClose() {
 		curr_time = float32(rl.GetTime())
